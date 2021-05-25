@@ -15,11 +15,13 @@ pub use std::{write, writeln};
 pub use std::io::Write as WriteIO;
 
 static DEBUG: AtomicBool =
-    AtomicBool::new(cfg!(debug_emit) && (cfg!(debug_assertions) || cfg!(test)));
+    AtomicBool::new(cfg!(feature="debug_emit") && (cfg!(debug_assertions) || cfg!(test)));
 
-/// Force debugging on or off. Debugging will be on by default when this crate is compiled with
-/// its `debug_emit` feature enabled *and also with* `debug_assertions` or `test` configured, and
-/// off otherwise.
+/// Force debugging on or off.
+///
+/// Debugging will be on by default when this crate is compiled with its `debug_emit` feature
+/// enabled, *and also* `debug_assertions` or `test` configured. Otherwise/// debugging will be
+/// off by default.
 pub fn set_debug(debug: bool) {
     DEBUG.store(debug, SeqCst);
 }
