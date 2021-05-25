@@ -1,0 +1,8 @@
+[package]
+name = "debug_macros"
+version = "0.1.0"
+authors = ["Bart Massey <bart.massey@gmail.com>"]
+edition = "2018"
+
+[features]
+debug_emit = []
