@@ -1,0 +1,13 @@
+[package]
+name = "demo"
+version = "0.1.0"
+authors = ["Bart Massey <bart.massey@gmail.com>"]
+edition = "2018"
+
+[dependencies.debug_macros]
+path = ".."
+features = ["debug_emit"]
+
+[[bin]]
+name = "demo"
+path = "demo.rs"
