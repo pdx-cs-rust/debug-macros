@@ -51,7 +51,7 @@ pub fn is_debug() -> bool {
 /// Panics if a write fails.
 #[macro_export]
 macro_rules! debug_writeln {
-    ($f:expr, $msg:literal, $x0:expr $(, $xs:expr)*) => {
+    ($f:expr, $msg:literal, $x0:expr $(, $xs:expr)* $(,)?) => {
         if $crate::is_debug() {
             $crate::write!($f, "debug: {}: ", $msg).unwrap();
             $crate::write!($f, "{:?}", $x0).unwrap();
@@ -75,7 +75,7 @@ macro_rules! debug_writeln {
 /// debug output occurs consecutively).
 #[macro_export]
 macro_rules! debug {
-    ($msg:literal, $($e:expr),*) => {{
+    ($msg:literal, $($e:expr),* $(,)?) => {{
         use $crate::WriteIO;
         let stderr = $crate::stderr();
         $crate::debug_writeln!(&mut stderr.lock(), $msg, $($e),*);
@@ -97,10 +97,10 @@ pub fn test_debug_writeln() {
     use std::fmt::Write;
     set_debug(true);
     macro_rules! test_msg {
-        ($r:literal, $m:literal $(, $e:expr)* ,) => {{
+        ($r:literal, $m:literal $(, $e:expr)* ; $($comma:tt)?) => {{
             assert!($crate::is_debug());
             let mut msg = String::new();
-            debug_writeln!(&mut msg, $m $(, $e)*);
+            debug_writeln!(&mut msg, $m $(, $e)* $($comma)?);
             assert_eq!($r, msg);
         }};
         () => {{
@@ -110,8 +110,9 @@ pub fn test_debug_writeln() {
         }};
     }
 
-    test_msg!("debug: running: Some(5), \"x\"\n", "running", Some(5), "x",);
-    test_msg!("debug: still running\n", "still running",);
+    test_msg!("debug: running: Some(5), \"x\"\n", "running", Some(5), "x";);
+    test_msg!("debug: running: Some(5), \"x\"\n", "running", Some(5), "x";,);
+    test_msg!("debug: still running\n", "still running";);
     test_msg!();
 }
 
