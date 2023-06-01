@@ -75,7 +75,7 @@ macro_rules! debug_writeln {
 /// debug output occurs consecutively).
 #[macro_export]
 macro_rules! debug {
-    ($msg:literal, $($e:expr),* $(,)?) => {{
+    ($msg:literal, $($e:expr),+ $(,)?) => {{
         use $crate::WriteIO;
         let stderr = $crate::stderr();
         $crate::debug_writeln!(&mut stderr.lock(), $msg, $($e),*);
